@@ -8,8 +8,10 @@ function generateId() {
 
 function Comment({ comment, path, onReply }) {
   const replyInputRef = useRef(null);
-  const replyAuthorRef=useRef(null);
+  const replyAuthorRef= useRef(null);
+  const editInputRef= useRef(null);
   const [showReplyInput, setShowReplyInput] = useState(false);
+  const [showEditInput, setshowEditInput] =useState(false);
 
   const formatTime = (timestamp) => {
     const date = new Date(timestamp);
@@ -19,6 +21,7 @@ function Comment({ comment, path, onReply }) {
   const handleReply = () => {
     const replyText = replyInputRef.current.value.trim();
     const replyauthorname=replyAuthorRef.current.value.trim();  
+   
     if (replyText) {
       const replyObject = {
         id: generateId(),  // Unique ID for the reply
@@ -30,9 +33,17 @@ function Comment({ comment, path, onReply }) {
       };
       onReply(path, replyObject);
       replyInputRef.current.value = '';
-      setShowReplyInput(false);
+      setShowReplyInput(false); 
     }
-  };
+  };     
+  
+  const handleEdit = () => {
+    const newText=editInputRef.current.value.trim();
+    if(newText){
+      onReply(path,{type:'edit',text: newText });
+      setshowEditInput(false);
+    }
+  }
 
   return (
     <div style={{ marginLeft: '20px', marginTop: '10px', background: '#eee', padding: '10px', borderRadius: '5px' }}>
@@ -46,9 +57,18 @@ function Comment({ comment, path, onReply }) {
         <button onClick={() => onReply(path, { type: 'downvote' })}>Downvote</button>
       </div>
       <button onClick={() => onReply(path, { type: 'delete' })} style={{ marginTop: '5px' }}> Delete</button>
-      <button >Edit</button>
-      <button onClick={() => setShowReplyInput(!showReplyInput)} style={{ marginTop: '5px' }}>Reply</button>
+      
+      <button onClick={ () => setshowEditInput(!showEditInput)} style={{ marginTop: '5px' }}>Edit</button>
 
+      {showEditInput && (
+        <div style={{ marginTop: '5px' }}>
+          <input type="text" placeholder="Edit here" ref={editInputRef} />
+          <button onClick={handleEdit}>Edit Text</button>
+        </div>
+      )}
+
+      <button onClick={() => setShowReplyInput(!showReplyInput)} style={{ marginTop: '5px' }}>Reply</button>
+     
       {showReplyInput && (
         <div style={{ marginTop: '5px' }}>
           <input type="text" placeholder="Reply here" ref={replyInputRef} />
@@ -68,12 +88,14 @@ function App() {
   const inputRef = useRef(null);
   const [comments, setComments] = useState([]);
   const [sortOrder, setSortOrder] = useState('newest');
-  const [filterName, setFilterName] = useState([]);
-  const authorRef= useRef(null);
+  const [filterName, setFilterName] = useState();
+  const authorRef = useRef(null);
+  const [authornames, setAuthorNames] = useState([]);
+   
   
-   const handleAddComment = () => {
+  const handleAddComment = () => {
     const text = inputRef.current.value.trim();
-    const authorname=authorRef.current.value.trim();
+    const authorname = authorRef.current.value.trim();
     
     if (text) {
       const newComment = {
@@ -85,6 +107,8 @@ function App() {
         votes: 0,
       };
       setComments([...comments, newComment]);
+      if(!authornames.includes(authorname))
+      setAuthorNames([...authornames, authorname]);
       inputRef.current.value = '';
       authorRef.current.value='';
     }
@@ -101,12 +125,17 @@ function App() {
         // Base case: target found
         if (newReply.type === 'delete'){
           return null;
+        } 
+        else if (newReply.type === 'edit') { 
+           return {  ...comment, text: newReply.text  }
         }
         else if (newReply.type === 'upvote') {
           return { ...comment, votes: comment.votes + 1 };
         } else if (newReply.type === 'downvote') {
           return { ...comment, votes: comment.votes - 1 };
         } else {
+          if(!authornames.includes(newReply.authorname))
+          setAuthorNames([...authornames,newReply.authorname]);
           return { ...comment, replies: [...(comment.replies), newReply]  };
         }
       } else {
@@ -145,11 +174,15 @@ function App() {
   };
 
   const getRepliesCheck = (replies)=>{
-    let matched = false;
+    //debugger;
     for(var reply of replies){
-      matched = reply.authorname === filterName  || getRepliesCheck(reply.replies);
+      // console.log("Checking reply by:", reply.authorname);
+       if(reply.authorname === filterName  || getRepliesCheck(reply.replies)){
+        return true;
     }
-    return matched;
+  }
+    return false;
+  
   }
 
   return (
@@ -160,15 +193,16 @@ function App() {
       <button onClick={handleAddComment} style={{ marginLeft: '10px' }}>
         Comment
       </button><br></br>
+    
       <div style={{marginTop: '20px'}}>
-      Filter by name:{}
-      <select onChange={(e) => setFilterName(e.target.value)} value={filterName} >
-        <option value="">Select Name</option>
-        <option value="name1">name1</option>
-        <option value="name2">name2</option>
-        <option value="name3">name3</option>
+      Filter by name:{''}
+     <select onChange={(e) => setFilterName(e.target.value)} value={filterName}>
+      <option value="">Select Name</option>
+        {authornames.map((name, index) => (
+          <option key={index} value={name}>{name}</option>
+        ))}
       </select>
-     </div>
+      </div>
 
       <div style={{ marginTop: '20px' }}>
         Sort by: {' '}
