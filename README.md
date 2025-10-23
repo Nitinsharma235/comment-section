@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Comment System App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+This is a simple React-based nested comment system with functionality for adding comments, nested replies, editing, deleting, voting, sorting, and filtering by author name. Each comment supports multiple levels of replies and dynamic updates.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Add Comments
+- Users can post comments by entering their name and message.  
+- Each comment is assigned a unique ID, timestamp, and vote count (starts at 0).  
 
-### `npm start`
+### Replies (Nested Comments)
+- Users can reply to any comment or reply.  
+- Replies appear directly below the parent comment.  
+- Supports unlimited levels of nesting.  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Edit & Delete
+- Users can edit the text of any comment or reply.  
+- Comments or replies can be deleted at any level of the thread.  
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Voting System
+- Each comment or reply can be upvoted or downvoted.  
+- Vote counts update dynamically.  
 
-### `npm test`
+### Sorting
+- Comments can be sorted by:
+  - Newest – Most recent first  
+  - Oldest – Earliest first  
+  - Top Voted – Most upvoted comments first  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Filter by Author
+- Users can filter comments and replies by author name using a dropdown list.  
+- Displays all comments and replies written by the selected author.  
 
-### `npm run build`
+## Technologies Used
+- React.js  
+- JavaScript (ES6)  
+- CSS  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How It Works
+1. Users type a comment and their name, then click Comment to post it.  
+2. Each comment displays buttons for Reply, Edit, Delete, Upvote, and Downvote.  
+3. Replies can be added to any comment or reply (nested structure).  
+4. Sorting and filtering options dynamically update visible comments.  
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

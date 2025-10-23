@@ -13,6 +13,23 @@ function Comment({ comment, path, onReply }) {
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [showEditInput, setshowEditInput] =useState(false);
 
+  // class Reply{
+  //   id;
+  //   text;
+  //   authorname;
+  //   replies;
+  //   timestamp;
+  //   votes;
+  //   constructor(generatedID, repliedText, autorname, replies){
+  //     this.id = generatedID;
+  //     this.text = repliedText;
+  //     this.authorname = autorname;
+  //     this.replies = replies;
+  //     this.timestamp = Date.now();
+  //     this.votes = 0;
+  //   }
+  // }
+
   const formatTime = (timestamp) => {
     const date = new Date(timestamp);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -23,6 +40,8 @@ function Comment({ comment, path, onReply }) {
     const replyauthorname=replyAuthorRef.current.value.trim();  
    
     if (replyText) {
+      // const replyObject = new Reply(generateId(),replyText,replyauthorname,[])
+
       const replyObject = {
         id: generateId(),  // Unique ID for the reply
         text: replyText,
@@ -176,11 +195,11 @@ function App() {
   const getRepliesCheck = (replies)=>{
     //debugger;
     for(var reply of replies){
-      // console.log("Checking reply by:", reply.authorname);
-       if(reply.authorname === filterName  || getRepliesCheck(reply.replies)){
-        return true;
+        // console.log("Checking reply by:", reply.authorname);
+        if(reply.authorname === filterName  || getRepliesCheck(reply.replies)){
+          return true;
+      }
     }
-  }
     return false;
   
   }
